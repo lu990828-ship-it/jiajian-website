@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>嘉簡美甲工作室｜預約與價目</title>
+  <style>
+    :root{
+      --bg:#fbf7f0;
+      --surface:#fffdf9;
+      --surface2:#f6efe4;
+      --ink:#2b2621;
+      --muted:#6b5f56;
+      --line:rgba(43,38,33,.12);
+      --accent:#8a6e5a;
+      --shadow:0 10px 30px rgba(43,38,33,.08);
+      --radius:20px;
+      --navH:74px;
+      --max:1120px;
+      --gap:16px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 600px at 20% -10%, #fff 0%, var(--bg) 55%, #f7f0e6 100%);
+    }
+
+    /* fixed nav */
+    .nav{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:var(--navH);
+      background: rgba(255,253,249,.86);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+      z-index:50;
+    }
+    .nav__inner{
+      max-width:var(--max);
+      margin:0 auto;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 16px;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 170px;
+    }
+    .brand__mark{
+      width:40px; height:40px;
+      border-radius:14px;
+      background: linear-gradient(135deg, #f4e8db, #fff);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 20px rgba(43,38,33,.08);
+      display:grid;
+      place-items:center;
+    }
+    .brand__name{display:flex; flex-direction:column; line-height:1.15}
+    .brand__name strong{font-weight:850; letter-spacing:.6px}
+    .brand__name span{font-size:12px; color:var(--muted)}
+
+    .menu{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      padding:6px 2px;
+    }
+    .menu::-webkit-scrollbar{display:none}
+    .menu a{
+      text-decoration:none;
+      color:var(--muted);
+      border:1px solid transparent;
+      padding:10px 12px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+      font-size:14px;
+      transition:.18s ease;
+    }
+    .menu a:hover{
+      color:var(--ink);
+      background: rgba(246,239,228,.75);
+      border-color: rgba(138,110,90,.18);
+      transform: translateY(-1px);
+    }
+
+    .icon{
+      width:18px; height:18px;
+      stroke:var(--accent);
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      flex:0 0 auto;
+    }
+
+    main{
+      padding-top: calc(var(--navH) + 22px);
+      padding-bottom: 88px;
+    }
+    .container{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 16px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .heroCard{
+      background: linear-gradient(180deg, rgba(255,253,249,.95), rgba(246,239,228,.65));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .heroCard:before{
+      content:"";
+      position:absolute;
+      inset:-40% -20% auto auto;
+      width:280px; height:280px;
+      background: radial-gradient(circle at 30% 30%, rgba(138,110,90,.18), transparent 55%);
+      transform: rotate(18deg);
+    }
+    .heroCard h1{
+      margin:0 0 8px 0;
+      font-size: clamp(22px, 3vw, 30px);
+      letter-spacing:.8px;
+    }
+    .heroCard p{margin:0; color:var(--muted); line-height:1.7}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(138,110,90,.22);
+      background: rgba(255,253,249,.88);
+      text-decoration:none;
+      font-size:14px;
+      transition:.18s ease;
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow: 0 14px 30px rgba(43,38,33,.10);}
+
+
+    .btn--primary{
+      background: linear-gradient(135deg, rgba(138,110,90,.34), rgba(246,239,228,.95));
+      border-color: rgba(138,110,90,.35);
+      color: var(--ink);
+      font-weight: 820;
+      box-shadow: 0 14px 34px rgba(43,38,33,.12);
+    }
+    .btn--primary:hover{
+      box-shadow: 0 18px 46px rgba(43,38,33,.16);
+    }
+
+    .qrWrap{display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; margin-top:10px}
+    .qrBox{
+      border:1px solid rgba(43,38,33,.10);
+      background: rgba(255,253,249,.92);
+      border-radius:16px;
+      padding:12px;
+      width:172px;
+      box-shadow: 0 12px 24px rgba(43,38,33,.06);
+    }
+    .qrBox img{width:100%; height:auto; display:block; border-radius:12px}
+    .qrBox .cap{margin-top:8px; font-size:12px; color:var(--muted); line-height:1.5}
+
+    .grid{display:grid; grid-template-columns:repeat(12, 1fr); gap: var(--gap);}
+    .card{
+      grid-column: span 6;
+      background: var(--surface);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      scroll-margin-top: calc(var(--navH) + 16px);
+    }
+    .card--full{grid-column: span 12;}
+
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      padding-bottom:10px;
+      border-bottom:1px dashed rgba(43,38,33,.12);
+    }
+    .title h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.6px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .hint{font-size:12px; color:var(--muted); white-space:nowrap;}
+
+    ul{margin:10px 0 0 0; padding-left:18px; color:var(--muted); line-height:1.78;}
+    li{margin:7px 0;}
+
+    .priceGrid{display:grid; grid-template-columns:repeat(12, 1fr); gap:12px; margin-top:10px;}
+    .mini{
+      grid-column: span 6;
+      border:1px solid rgba(43,38,33,.10);
+      border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,253,249,.95), rgba(246,239,228,.55));
+      padding:14px;
+    }
+    .mini h3{margin:0 0 6px 0; font-size:15px; color:var(--ink); letter-spacing:.4px;}
+    .mini ul{margin:6px 0 0 0;}
+
+    .contactGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top:12px;
+    }
+    .contactCard{
+      text-decoration:none;
+      border:1px solid rgba(43,38,33,.10);
+      background: linear-gradient(180deg, rgba(255,253,249,.95), rgba(246,239,228,.55));
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition:.18s ease;
+    }
+    .contactCard:hover{
+      transform: translateY(-1px);
+      border-color: rgba(138,110,90,.28);
+      box-shadow: 0 14px 30px rgba(43,38,33,.10);
+    }
+    .contactCard small{display:block; color:var(--muted); margin-top:2px; font-size:12px;}
+
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:12px;
+      margin-top:10px;
+    }
+    .ph{
+      grid-column: span 4;
+      border-radius:18px;
+      border:1px dashed rgba(43,38,33,.14);
+      background: linear-gradient(180deg, rgba(255,253,249,.95), rgba(246,239,228,.55));
+      height:170px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      text-align:center;
+      padding:12px;
+    }
+
+    .footer{
+      margin-top:18px;
+      text-align:center;
+      color: rgba(107,95,86,.92);
+      font-size:12px;
+      padding:16px 0 0 0;
+    }
+
+    /* Floating LINE button */
+    .floatLine{
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 60;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(138,110,90,.24), rgba(246,239,228,.85));
+      border: 1px solid rgba(138,110,90,.26);
+      box-shadow: 0 16px 40px rgba(43,38,33,.14);
+      backdrop-filter: blur(10px);
+    }
+    .floatLine span{
+      font-size:14px;
+      color:var(--ink);
+      font-weight:780;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+
+    @media (max-width: 900px){
+      :root{--navH:78px}
+      .hero{grid-template-columns:1fr;}
+      .card{grid-column: span 12;}
+      .mini{grid-column: span 12;}
+      .ph{grid-column: span 6; height:150px;}
+      .contactGrid{grid-template-columns: 1fr;}
+      .nav__inner{padding:0 12px;}
+      .menu a{padding:10px 10px; font-size:13px;}
+    }
+    @media (max-width: 420px){
+      .ph{grid-column: span 12;}
+      .floatLine{right:12px; bottom:12px;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SVG icons -->
+  <svg width="0" height="0" style="position:absolute">
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20 10l-8 8-10-10V4h4l10 6z"/><path d="M7 7h.01"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M8 4h10a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V8z"/><path d="M8 4v4h4"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 8.6c0 5.4-8.8 10.4-8.8 10.4S3.2 14 3.2 8.6c0-2.3 1.9-4.2 4.2-4.2 1.4 0 2.7.7 3.5 1.8.8-1.1 2.1-1.8 3.5-1.8 2.3 0 4.4 1.9 4.4 4.2z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2c-9.5-.9-16.8-8.2-17.7-17.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.9a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.6A2 2 0 0 1 22 16.9z"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><path d="M12 18h.01"/><path d="M9.1 9a3 3 0 1 1 5.8 1c0 2-3 2-3 4"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"/><path d="M9 3v15"/><path d="M15 6v15"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 11h.01"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></symbol>
+    <symbol id="i-line" viewBox="0 0 24 24"><path d="M20 11c0 4.4-4 8-8.9 8-1.3 0-2.6-.2-3.7-.6L4 19l.9-2.8C4.3 15.2 4 14.1 4 13c0-4.4 4-8 8.9-8S20 6.6 20 11z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M16 11.8a4 4 0 1 1-7.9 1.4 4 4 0 0 1 7.9-1.4z"/><path d="M17.6 6.4h.01"/></symbol>
+    <symbol id="i-sale" viewBox="0 0 24 24"><path d="M20 12l-8 8-10-10V4h6l12 8z"/><path d="M7 7h.01"/><path d="M14 10l-4 4"/></symbol>
+  </svg>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-spark"/></svg>
+        </div>
+        <div class="brand__name">
+          <strong>嘉簡美甲工作室</strong>
+          <span>美甲・美睫・熱蠟除毛・精油紓壓</span>
+        </div>
+      </div>
+
+      <nav class="menu" aria-label="主要選單">
+        <a href="#promo"><svg class="icon" viewBox="0 0 24 24"><use href="#i-sale"/></svg>優惠活動</a>
+        <a href="#price"><svg class="icon" viewBox="0 0 24 24"><use href="#i-tag"/></svg>價目表</a>
+        <a href="#mobile"><svg class="icon" viewBox="0 0 24 24"><use href="#i-map"/></svg>到府服務</a>
+        <a href="#gallery"><svg class="icon" viewBox="0 0 24 24"><use href="#i-image"/></svg>作品集</a>
+        <a href="#booking"><svg class="icon" viewBox="0 0 24 24"><use href="#i-note"/></svg>預約須知</a>
+        <a href="#about"><svg class="icon" viewBox="0 0 24 24"><use href="#i-heart"/></svg>品牌介紹</a>
+        <a href="#contact"><svg class="icon" viewBox="0 0 24 24"><use href="#i-phone"/></svg>聯絡方式</a>
+        <a href="#faq"><svg class="icon" viewBox="0 0 24 24"><use href="#i-help"/></svg>常見問題</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="hero" aria-label="首頁">
+        <div class="heroCard">
+          <h1>預約集中頁</h1>
+          <p>一頁式卡片排版，讓客人快速看到優惠、價目、到府收費與預約規則。桌面與手機皆固定置頂選單，直接點選即可。</p>
+          <div class="ctaRow">
+            <a class="btn" href="https://line.me/R/ti/p/@872vfisd" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-line"/></svg>加入 LINE 預約
+            </a>
+            <a class="btn" href="https://www.instagram.com/k1031105/" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-instagram"/></svg>查看 IG 作品
+            </a>
+          </div>
+          <ul>
+            <li>LINE：@872vfisd</li>
+            <li>IG：k1031105</li>
+          </ul>
+        </div>
+
+        <div class="heroCard">
+          <h1>LINE QR Code</h1>
+          <div class="qrWrap">
+            <div class="qrBox">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGAQAAAACh4MLwAAABnElEQVR4nO2YMW4cMRAEi0cCF5KAH6CnzP3scE/SD7hP0QMMzIYCZtEOuDorsB040QQiiA3YSaM53cPZIv68jstfAPhGADlAdcCkWd0AsEjBzSRViS45gVVJnoFbAwoGG3uJwVW0fdSfGe70A9nvgTVgv30Rg38hVz2qG32m4dYAQWNjvB4vXobTxZ6B29On9txAFp+u5YBVzcDWQQpubnIDiz45g44cGYKkgOhLsSm3lcMJuF1ga9D2e+uPMgCiS57DC5rViS76DJCmNCOFbjx7qPzkKSl6Ei9AX1pR3aT1aMqg2wWsvt3LsKtbQINYbv16bkiq521aXV+3LPXmFljVlCZ90memerNlzHp2CAFZdDuLnwAwuVWppugLF2DlRtWM/jgGR7m9jxxeWEaQzuD1dZhBt0/vkD7BAlvdPwU3h5W6btEFVp009WaS6PMYXN/KGrVy1NvHnLWP6qPCMShQlWmu7wrsfVjrksR+S6Dbb6S8zNZn9Q22MrLcqaCB9hKtxPDjx2u0DNw+zVkSfa4wydFPy/c/rv9CfgGpqzuPiXN3rwAAAABJRU5ErkJggg==" alt="LINE 預約 QR Code">
+              <div class="cap">掃描加入 LINE：@872vfisd</div>
+            </div>
+            <ul style="margin:0; padding-left:18px">
+              
+              <li>客人掃描後可直接傳訊預約。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+
+        <!-- 優惠活動（可替換模組） -->
+        <article class="card card--full" id="promo">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-sale"/></svg>優惠活動</h2>
+            <div class="hint"></div>
+          </div>
+          <div class="priceGrid">
+            <div class="mini">
+              <h3>本月限定｜雙重優惠</h3>
+              <ul>
+                <li>任選兩項：美甲／美睫／除毛／睫毛管理</li>
+                <li>現折 NT$200</li>
+                <li>新客再送指緣油</li>
+                <li>限當日完成，不與其他優惠併用</li>
+              </ul>
+              <div class="ctaRow">
+                <a class="btn" href="https://line.me/R/ti/p/@872vfisd" target="_blank" rel="noopener">立即預約</a>
+              </div>
+            </div>
+            <div class="mini">
+              <h3>兩人同行優惠</h3>
+              <ul>
+                <li>每人現折 NT$100</li>
+                <li>需同時預約，同日完成</li>
+                <li>不與其他優惠併用</li>
+                <li>名額有限，額滿為止</li>
+              </ul>
+              <div class="ctaRow">
+                <a class="btn" href="https://line.me/R/ti/p/@872vfisd" target="_blank" rel="noopener">立即預約</a>
+              </div>
+            </div>
+          </div>
+          <ul>
+            
+          </ul>
+        </article>
+
+        <!-- 價目表（整合版） -->
+        <article class="card card--full" id="price">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-tag"/></svg>價目表</h2>
+            <div class="hint">價格皆為新台幣</div>
+          </div>
+
+          <div class="priceGrid">
+            <div class="mini">
+              <h3>美睫</h3>
+              <ul>
+                <li>3D單根 100根 NT$599</li>
+                <li>3D單根 130根 NT$799</li>
+                <li>3D單根 150根 NT$999</li>
+                <li>6D開花 300根 NT$799</li>
+                <li>6D開花 500根 NT$999</li>
+                <li>6D開花 700根 NT$1099</li>
+                <li>下睫毛 自然 NT$100 / 濃密 NT$200</li>
+                <li>LED光固膠 升級 +100 / 單次 +200</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>卸睫</h3>
+              <ul>
+                <li>本店續做 免費</li>
+                <li>他店續做 NT$100</li>
+                <li>本店卸不做 NT$200</li>
+                <li>他店卸不做 NT$300</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>芳療</h3>
+              <ul>
+                <li>精油舒壓 60分鐘 NT$800</li>
+                <li>精油舒壓 90分鐘 NT$1299</li>
+                <li>精油舒壓 120分鐘 NT$2000</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>凝膠美甲（手部）</h3>
+              <ul>
+                <li>透明 NT$499</li>
+                <li>單色 NT$799</li>
+                <li>貓眼 NT$899</li>
+                <li>暈染 NT$990</li>
+                <li>造型 傳圖報價</li>
+                <li>延甲/貼鑽 NT$50/指</li>
+                <li>加厚（建議）NT$200</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>卸甲</h3>
+              <ul>
+                <li>本店卸甲（續做）免費</li>
+                <li>他店卸甲（續做）NT$250</li>
+                <li>純卸甲（本店）NT$350</li>
+                <li>純卸甲（他店）NT$450</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>保養</h3>
+              <ul>
+                <li>手部基礎修剪 NT$250</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>熱蠟除毛 女神</h3>
+              <ul>
+                <li>小鬍子 NT$200</li>
+                <li>腋下 NT$350</li>
+                <li>全手 NT$800</li>
+                <li>小腿 NT$899</li>
+                <li>全腿 NT$1100</li>
+                <li>手指頭 NT$150</li>
+                <li>腳趾頭 NT$150</li>
+              </ul>
+            </div>
+
+            <div class="mini">
+              <h3>熱蠟除毛 男神</h3>
+              <ul>
+                <li>腋下 NT$400</li>
+                <li>全手 NT$900</li>
+                <li>小腿 NT$999</li>
+                <li>全腿 NT$1200</li>
+                <li>前胸 NT$599</li>
+                <li>手指頭 NT$150</li>
+                <li>腳趾頭 NT$150</li>
+              </ul>
+            </div>
+          </div>
+
+          <ul>
+            <li>若有特殊狀況（敏感肌、孕期等）請先告知以利評估。</li>
+            <li>造型類可先傳參考圖，會提供可行性與報價建議。</li>
+          </ul>
+        </article>
+
+        <!-- 到府服務 -->
+        <article class="card card--full" id="mobile">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-map"/></svg>到府服務收費</h2>
+            <div class="hint">依地區計費</div>
+          </div>
+          <ul>
+            <li>到店操作（工作室）NT$0</li>
+            <li>壽豐／志學 NT$150</li>
+            <li>吉安／花蓮市區 NT$250</li>
+            <li>鳳林／光復／北埔 NT$350</li>
+          </ul>
+          <ul>
+            <li>請提供地址與停車資訊，若路程特殊將另行告知。</li>
+          </ul>
+        </article>
+
+        <!-- 作品集 -->
+        
+        
+        <article class="card card--full" id="gallery">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-image"/></svg>作品集</h2>
+            <div class="hint">點擊前往 IG</div>
+          </div>
+
+          <div class="ctaRow" style="margin-top:6px;">
+            <a class="btn btn--primary" href="https://www.instagram.com/k1031105/" target="_blank" rel="noopener" aria-label="前往 Instagram 查看作品">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-instagram"/></svg>
+              前往 Instagram 查看作品
+            </a>
+          </div>
+        </article>
+
+
+
+        <!-- 預約須知 -->
+        <article class="card" id="booking">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-note"/></svg>預約須知</h2>
+            <div class="hint">完全預約制</div>
+          </div>
+          <ul>
+            <li>預約方式：請提供姓名、服務項目、期望日期與時段、是否需卸甲。</li>
+            <li>預約定金：需支付定金 NT$200，完成後才算預約成功，當日可折抵消費。</li>
+            <li>改期規定：需於約定時間前提出，並以一次為限。</li>
+            <li>取消規定：臨時取消、未到店，定金恕不退還。</li>
+            <li>遲到規定：遲到可能縮短服務時間或調整項目，必要時取消服務。</li>
+          </ul>
+        </article>
+
+        <!-- 品牌介紹 -->
+        <article class="card" id="about">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-heart"/></svg>品牌介紹</h2>
+            <div class="hint">溫柔細緻</div>
+          </div>
+          <ul>
+            <li>品牌定位：乾淨耐看、細節控，讓日常也能有質感。</li>
+            <li>服務特色：溝通清楚、客製建議、流程透明、重視舒適度。</li>
+            <li>衛生流程：器具消毒與一次性耗材使用。</li>
+          </ul>
+        </article>
+
+        <!-- 聯絡方式（已移除 WhatsApp，保留 LINE/IG） -->
+        <article class="card card--full" id="contact">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-phone"/></svg>聯絡方式</h2>
+            <div class="hint">LINE：@872vfisd</div>
+          </div>
+
+          <div class="contactGrid" role="list">
+            <a class="contactCard" role="listitem" href="https://line.me/R/ti/p/@872vfisd" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-line"/></svg>
+              <div><div>LINE</div><small>點擊加入並預約</small></div>
+            </a>
+
+            <a class="contactCard" role="listitem" href="https://www.instagram.com/k1031105/" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-instagram"/></svg>
+              <div><div>Instagram</div><small>查看作品與最新活動</small></div>
+            </a>
+          </div>
+
+          <ul>
+            <li>傳訊建議：請附上服務項目、日期時段、是否需卸甲、參考圖或想要的風格。</li>
+            
+          </ul>
+        </article>
+
+        <!-- FAQ -->
+        <article class="card card--full" id="faq">
+          <div class="title">
+            <h2><svg class="icon" viewBox="0 0 24 24"><use href="#i-help"/></svg>常見問題</h2>
+            <div class="hint"></div>
+          </div>
+          <ul>
+            <li>需要提前多久預約：建議提前 3–7 天，熱門時段可更早。</li>
+            <li>卸甲是否另計：依卸除方式與狀況收費，預約時請先告知。</li>
+            <li>可以指定風格嗎：可以，建議提供參考圖並說明想保留的重點。</li>
+            <li>敏感肌或特殊狀況：請提前告知，會提供適合的流程與建議。</li>
+          </ul>
+        </article>
+
+      </section>
+
+      <div class="footer">
+        © 嘉簡美甲工作室｜預約請加 LINE：@872vfisd
+      </div>
+    </div>
+  </main>
+
+  <a class="floatLine" href="https://line.me/R/ti/p/@872vfisd" target="_blank" rel="noopener" aria-label="加入 LINE 預約">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-line"/></svg>
+    <span>LINE 預約</span>
+  </a>
+
+</body>
+</html>
